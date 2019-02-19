@@ -18,7 +18,7 @@ for (var i=0; i<repository.length; i++) {
 
   for (var j=0; j<repository[i].types.length; j++) {
     var type = repository[i].types[j];
-    document.write('<span class="' + type + '">' + type + '</span>');
+    document.write('<span class="type type-' + type + '">' + type + '</span>');
   }
 
   document.write('<p><i>' + repository[i].description + '</i></p>');
