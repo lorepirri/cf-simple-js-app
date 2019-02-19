@@ -4,17 +4,64 @@
 /* ===GLOBAL=== */
 
 * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* ===PRIMARY=== */
 
 body {
-    background-color: #fff;
-    color: #000;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400; 
-    font-size: 16px;
-    line-height: 1.6;
+  background-color: #fff;
+  color: #000;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400; 
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
 }
+
+.pokemon-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.pokemon-card {
+  border: 1px solid black;
+  border-radius: 8px;
+  margin: 30px 20px;
+  padding: 20px;
+  max-width: 320px;
+  width: 100%
+}
+
+.type {
+  color: #fff;
+  border-radius: 4px;
+  font-variant: small-caps;
+  margin: 5px;
+  padding: 2px 8px 4px 8px;
+  font-weight: 600;
+}
+
+.type-fire {
+  border: 1px solid rgb(247, 191, 151);
+  background: rgb(237, 109, 18);
+}
+
+.type-grass {
+  border: 1px solid rgb(186, 227, 166);
+  background: rgb(105, 194, 61);
+}
+
+.type-poison {
+  border: 1px solid rgb(200, 116, 200);
+  background: rgb(146, 58, 146);
+}
+
+.pokemon-card .description {
+  text-align: left;
+  padding-top: 20px;
+}
+
