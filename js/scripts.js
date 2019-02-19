@@ -5,6 +5,8 @@ var repository = [
   { name: 'Charmander', height: 0.6, types: ['fire'], description: "The fire on the tip of its tail is a measure of its life. If healthy, its tail burns intensely." },
 ];
 
+document.write('<div class="pokemon-card-container">');
+
 for (var i=0; i<repository.length; i++) {
 
   document.write('<div class="pokemon-card">');
@@ -23,3 +25,5 @@ for (var i=0; i<repository.length; i++) {
   
   document.write('</div>');
 }
+
+document.write('</div>');
