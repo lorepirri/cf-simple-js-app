@@ -21,7 +21,7 @@ for (var i=0; i<repository.length; i++) {
     document.write('<span class="type type-' + type + '">' + type + '</span>');
   }
 
-  document.write('<p><i>' + repository[i].description + '</i></p>');
+  document.write('<p class="description">' + repository[i].description + '</p>');
   
   document.write('</div>');
 }
