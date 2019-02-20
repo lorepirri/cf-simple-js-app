@@ -25,6 +25,7 @@ body {
   flex-wrap: wrap;
   padding-left: 5%;
   padding-right: 5%;
+  justify-content: center;
 }
 
 .pokemon-card {
