@@ -60,56 +60,53 @@
     };
   })(); // end of pokemonRepository
   
-  function getPokemonTypeTemplate(type) {
-    // template for the type
-    return '<span class="type type-' + type + '">' + type + '</span>';
-  }
-
-  function getPokemonCardTemplate(name, height, types, description) {
-
-    // template for one single pokemon card
-
-    var template = '<div class="pokemon-card">';
-    template += '<h2>' + name + '</h2>';
-  
-    // if pokemon's height is > 1 then shows "Wow, that’s big!" aside
-    var bigPokemonLabel = height > 1 ? ' <i>Wow, that’s big!</i>' : '';
-    template += '<h3>(height: ' + height + ')' + bigPokemonLabel + '</h3>';
-  
-    // list the types of the pokemon (fire, grass, poison, etc.)
-    types.forEach(function(type) {
-      template += getPokemonTypeTemplate(type);
-    });
-  
-    template += '<p class="description">' + description + '</p>';    
-    template += '</div>';
-    return template;
-  }
-
-  function getPokemonCardTemplateContainer(pokemons) {
-
-    // template for the whole container
-
-    var template = '<div class="pokemon-card-container">';
-  
-    if (pokemons.length > 0) {
-      // if there are any pokemons
-      // go through all of them and list them
-      pokemons.forEach(function(pokemon) {    
-        template += getPokemonCardTemplate(
-                        pokemon.name, 
-                        pokemon.height, 
-                        pokemon.types, 
-                        pokemon.description
-                      );
-      });
-    } else {
-      // in case there are no pokemons
-      template += 'no pokemons in your deck.';
-    }
+  function showDetails(pokemon) {
+    var name = pokemon.name;
     
-    template += '</div>';
-    return template;
+    // for the purpose of the exercise, to be removed in the future
+    console.log('Pokemon', name);
+  }
+
+  function addListItem(pokemon, $pokemonsListContainer) {
+
+    // create and append a pokemon button to the specified <ul> element
+
+    var { name } = pokemon;
+
+    // create main <li> element containing the button
+    var $listItemElement = document.createElement('li');
+    // add a class to it
+    $listItemElement.classList.add('pokemon-list__item');
+
+    // button
+    var $pokemonInfoDetailsButton = document.createElement('button');
+    // simple text element for the button (the name of the pokemon)
+    var $pokemonInfoDetailsButtonText = document.createTextNode(name);
+    // add the text element to the button element
+    $pokemonInfoDetailsButton.appendChild($pokemonInfoDetailsButtonText);
+
+    // appent the button to the <li> element
+    $listItemElement.appendChild($pokemonInfoDetailsButton);
+
+    // appent the <li> element to the DOM, to the specified <ul>
+    $pokemonsListContainer.appendChild($listItemElement);
+
+    // add an event listener for the button, which was just appended to the DOM
+    $pokemonInfoDetailsButton.addEventListener('click', function(event) {
+      showDetails(pokemon);
+    });
+  }
+
+  function populatePokemonsIntoListContainer(pokemons, $pokemonsListContainer) {
+  
+    if (pokemons.length > 0 && $pokemonsListContainer) {      
+      // if there are any pokemons and the list container
+      // exists, go through all of them and append them to it
+      pokemons.forEach(function(pokemon) {
+        // append each pokemon to the specified <ul> element
+        addListItem(pokemon, $pokemonsListContainer);
+      });  
+    }
   }
 
   // add a pokemon at runtime
@@ -121,9 +118,19 @@
                     });
   
   var pokemons = pokemonRepository.getAll();
+
+  // this is an example of filtering pokemons by name
+  // comment out to test it
   //var pokemons = pokemonRepository.filter('Ivysaur');
 
-  // render template of the container (inside there is everything)
-  document.write(getPokemonCardTemplateContainer(pokemons));
+  // the the <ul> element where to appen all the <li> elements
+  // each representing a pokemon card
+  var $pokemonsListContainer = document.querySelector('.pokemon-list');
+
+  if (pokemons && $pokemonsListContainer) {
+    // if both pokemons and the <ul> are existing, then populate the
+    // list with pokemons from the repository
+    populatePokemonsIntoListContainer(pokemons, $pokemonsListContainer)
+  }
   
 })();
