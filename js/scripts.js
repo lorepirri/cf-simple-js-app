@@ -5,7 +5,7 @@
     // this contains all of the pokemons
     var repository = [];
     var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-    
+      
     // properties of a valid object in the repository
     var requiredProperties = ['name', 'detailsUrl'];
 
@@ -68,20 +68,39 @@
         })
     }
 
+    function loadDetails(pokemon) {
+      var url = pokemon.detailsUrl;
+      return fetch(url)
+        .then(function (response) {
+          // this returns a promise
+          return response.json();
+        })
+        .then(function (details) {
+          // Now we add the details to the item
+          pokemon.imageUrl = details.sprites.front_default;
+          pokemon.height = details.height;
+          pokemon.types = Object.keys(details.types);
+        })
+        .catch(function (e) {
+          console.error(e);
+        });
+    }
+
     // exposed public functions
     return {
       add: add,
       getAll: getAll,
       filter: filter,
-      loadList: loadList
+      loadList: loadList,
+      loadDetails: loadDetails
     };
   })(); // end of pokemonRepository
   
   function showDetails(pokemon) {
-    var name = pokemon.name;
-    
-    // for the purpose of the exercise, to be removed in the future
-    console.log('Pokemon', name);
+    pokemonRepository.loadDetails(pokemon)
+      .then(function () {
+        console.log(pokemon);   
+      });
   }
 
   function addListItem(pokemon, $pokemonsListContainer) {
@@ -113,11 +132,11 @@
       showDetails(pokemon);
     });
   }
-
+ 
   // the the <ul> element where to append all the <li> elements
   // each representing a pokemon card
   var $pokemonsListContainer = document.querySelector('.pokemon-list');
-  
+
   if ($pokemonsListContainer) {
     // if the <ul> is existing, load the data from server and 
     // then populate the list with pokemons from the repository
@@ -127,12 +146,12 @@
       .then(function() {
         // Now the data is loaded!
         // If there are any pokemons and the list container
-      // exists, go through all of them and append them to it
+        // exists, go through all of them and append them to it        
         pokemonRepository.getAll().forEach(function(pokemon) {
-        // append each pokemon to the specified <ul> element
-        addListItem(pokemon, $pokemonsListContainer);
-      });  
-                    });
+          // append each pokemon to the specified <ul> element
+          addListItem(pokemon, $pokemonsListContainer);
+        });
+      });
   }
   
 })();
