@@ -104,7 +104,7 @@
   }
 
   function hideLoadingMessage($listSpinnerSpan) {
-    $listSpinnerSpan.classList.toggle('list-spinner');
+    $listSpinnerSpan.classList.remove('list-spinner');
   }
 
   function showButtonSpinner({name}) {
@@ -117,7 +117,7 @@
   }
   
   function hideButtonSpinner($spinnerSpan) {
-    $spinnerSpan.classList.toggle('button-spinner');
+    $spinnerSpan.classList.remove('button-spinner');
   }
 
   function showDetails(pokemon) {
