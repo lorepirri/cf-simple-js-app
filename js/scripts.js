@@ -3,15 +3,11 @@
   var pokemonRepository = (function () {
 
     // this contains all of the pokemons
-    var repository = [
-      { name: 'Bulbasaur', height: 0.7, types: ['grass', 'poison'], description: "For some time after its birth, it grows by gaining nourishment from the seed on its back." },
-      { name: 'Ivysaur', height: 1, types: ['grass', 'poison'], description: "When the bud on its back starts swelling, a sweet aroma wafts to indicate the flowers coming bloom." },
-      { name: 'Venusaur', height: 2, types: ['grass', 'poison'], description: "After a rainy day, the flower on its back smells stronger. The scent attracts other Pokémon." },
-      { name: 'Charmander', height: 0.6, types: ['fire'], description: "The fire on the tip of its tail is a measure of its life. If healthy, its tail burns intensely." },
-    ];
+    var repository = [];
+    var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
     
     // properties of a valid object in the repository
-    var requiredProperties = ['name', 'height', 'types', 'description'];
+    var requiredProperties = ['name', 'detailsUrl'];
 
     function validate(pokemon) {
 
@@ -52,11 +48,32 @@
       return repository.filter(filterByName);
     }
 
+    function loadList() {
+      return fetch(apiUrl)
+        .then(function (response) {
+          // this returns a promise
+          return response.json();
+        })
+        .then(function(json) {
+          json.results.forEach(function(item) {
+            var pokemon = {
+              name: item.name,
+              detailsUrl: item.url
+            };
+            add(pokemon);
+          });
+        })
+        .catch(function (e) {
+          console.error(e);
+        })
+    }
+
     // exposed public functions
     return {
       add: add,
       getAll: getAll,
-      filter: filter
+      filter: filter,
+      loadList: loadList
     };
   })(); // end of pokemonRepository
   
@@ -97,40 +114,25 @@
     });
   }
 
-  function populatePokemonsIntoListContainer(pokemons, $pokemonsListContainer) {
+  // the the <ul> element where to append all the <li> elements
+  // each representing a pokemon card
+  var $pokemonsListContainer = document.querySelector('.pokemon-list');
   
-    if (pokemons.length > 0 && $pokemonsListContainer) {      
-      // if there are any pokemons and the list container
+  if ($pokemonsListContainer) {
+    // if the <ul> is existing, load the data from server and 
+    // then populate the list with pokemons from the repository
+
+    // load the repository from the server to the repository
+    pokemonRepository.loadList()
+      .then(function() {
+        // Now the data is loaded!
+        // If there are any pokemons and the list container
       // exists, go through all of them and append them to it
-      pokemons.forEach(function(pokemon) {
+        pokemonRepository.getAll().forEach(function(pokemon) {
         // append each pokemon to the specified <ul> element
         addListItem(pokemon, $pokemonsListContainer);
       });  
-    }
-  }
-
-  // add a pokemon at runtime
-  pokemonRepository.add({ 
-                      name: 'Charmeleon', 
-                      height: 1.1, 
-                      types: ['fire'], 
-                      description: "In the rocky mountains where Charmeleon live, their fiery tails shine at night like stars." 
                     });
-  
-  var pokemons = pokemonRepository.getAll();
-
-  // this is an example of filtering pokemons by name
-  // comment out to test it
-  //var pokemons = pokemonRepository.filter('Ivysaur');
-
-  // the the <ul> element where to appen all the <li> elements
-  // each representing a pokemon card
-  var $pokemonsListContainer = document.querySelector('.pokemon-list');
-
-  if (pokemons && $pokemonsListContainer) {
-    // if both pokemons and the <ul> are existing, then populate the
-    // list with pokemons from the repository
-    populatePokemonsIntoListContainer(pokemons, $pokemonsListContainer)
   }
   
 })();
