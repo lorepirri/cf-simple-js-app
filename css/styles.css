@@ -7,6 +7,7 @@
 /* ===LINKS=== */
 /* ===BUTTONS=== */
 /* ===MEDIA QUERIES=== */
+/* ===ANIMATIONS=== */
 
 /*
 Colors:
@@ -269,4 +270,39 @@ button:hover, button:focus, .button:hover, .button:focus {
   .page-header {
     padding: 10px;
   }
+}
+
+/* ===ANIMATIONS=== */
+ 
+.button-spinner {
+  
+  /* https://stephanwagner.me/only-css-loading-spinner */
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #000;
+  animation: spinner .6s linear infinite;
+}
+
+.list-spinner {
+  
+  /* https://stephanwagner.me/only-css-loading-spinner */
+  box-sizing: border-box;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #000;
+  animation: spinner .6s linear infinite;
+}
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
 }

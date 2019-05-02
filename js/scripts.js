@@ -1,4 +1,7 @@
 (function () {
+  
+  // this is added as prefix to the id of the spinner span
+  var BUTTON_SPINNER_ID_PREFIX = 'spinner-'
 
   var pokemonRepository = (function () {
 
@@ -96,10 +99,38 @@
     };
   })(); // end of pokemonRepository
   
+  function showLoadingMessage($listSpinnerSpan) {
+    $listSpinnerSpan.classList.add('list-spinner');
+  }
+
+  function hideLoadingMessage($listSpinnerSpan) {
+    $listSpinnerSpan.classList.toggle('list-spinner');
+  }
+
+  function showButtonSpinner({name}) {
+    var target_id = '#' + BUTTON_SPINNER_ID_PREFIX + name;
+    var $spinnerSpan = document.querySelector(target_id);
+    if ($spinnerSpan) {
+      $spinnerSpan.classList.add('button-spinner');
+    }
+    return $spinnerSpan
+  }
+  
+  function hideButtonSpinner($spinnerSpan) {
+    $spinnerSpan.classList.toggle('button-spinner');
+  }
+
   function showDetails(pokemon) {
+    // show loading spinner in the button
+    var $spinnerSpan = showButtonSpinner(pokemon)
+    // load details
     pokemonRepository.loadDetails(pokemon)
       .then(function () {
-        console.log(pokemon);   
+        console.log(pokemon);
+      })
+      .finally(function () {
+        // hide loading spinner in the button
+        hideButtonSpinner($spinnerSpan);
       });
   }
 
@@ -113,13 +144,19 @@
     var $listItemElement = document.createElement('li');
     // add a class to it
     $listItemElement.classList.add('pokemon-list__item');
-
+        
     // button
     var $pokemonInfoDetailsButton = document.createElement('button');
     // simple text element for the button (the name of the pokemon)
     var $pokemonInfoDetailsButtonText = document.createTextNode(name);
+    // span for the spinner within the button
+    var $spinnerSpan = document.createElement('span');
+    $spinnerSpan.setAttribute('id', BUTTON_SPINNER_ID_PREFIX + name);
+
     // add the text element to the button element
     $pokemonInfoDetailsButton.appendChild($pokemonInfoDetailsButtonText);
+    // add the span for the spinner
+    $pokemonInfoDetailsButton.appendChild($spinnerSpan);
 
     // appent the button to the <li> element
     $listItemElement.appendChild($pokemonInfoDetailsButton);
@@ -132,7 +169,7 @@
       showDetails(pokemon);
     });
   }
- 
+
   // the the <ul> element where to append all the <li> elements
   // each representing a pokemon card
   var $pokemonsListContainer = document.querySelector('.pokemon-list');
@@ -140,6 +177,14 @@
   if ($pokemonsListContainer) {
     // if the <ul> is existing, load the data from server and 
     // then populate the list with pokemons from the repository
+
+    // div for the spinner within the button
+    var $listSpinnerDiv = document.createElement('div');
+    // appent the div to the <ul>
+    $pokemonsListContainer.parentNode.insertBefore($listSpinnerDiv, $pokemonsListContainer);
+
+    // show list loading spinner
+    showLoadingMessage($listSpinnerDiv)
 
     // load the repository from the server to the repository
     pokemonRepository.loadList()
@@ -151,6 +196,10 @@
           // append each pokemon to the specified <ul> element
           addListItem(pokemon, $pokemonsListContainer);
         });
+      })
+      .finally(function () {
+        // hide list loading spinner
+        hideLoadingMessage($listSpinnerDiv);
       });
   }
   
