@@ -99,6 +99,69 @@
     };
   })(); // end of pokemonRepository
   
+
+  var modalDetails = (function () {
+
+    var $modalContainer = document.querySelector('#modal-container');
+
+    function show({name, height, imageUrl}) {
+      // Clear all existing modal content
+      $modalContainer.innerHTML = '';
+    
+      var $modal = document.createElement('div');
+      $modal.classList.add('modal');
+    
+      // Add the new modal content
+      var $closeButtonElement = document.createElement('button');
+      $closeButtonElement.classList.add('modal-close');
+      $closeButtonElement.innerText = 'Close';
+      // add event listener to close the modal
+      $closeButtonElement.addEventListener('click', hide);
+      
+      var $titleElement = document.createElement('h1');
+      $titleElement.innerText = name;
+
+      var $imageElement = document.createElement('img');
+      $imageElement.setAttribute('src', imageUrl);
+
+      var $contentElement = document.createElement('p');
+      $contentElement.innerText = `Height ${height}`;
+    
+      $modal.appendChild($closeButtonElement);
+      $modal.appendChild($titleElement);
+      $modal.appendChild($imageElement);
+      $modal.appendChild($contentElement);
+      $modalContainer.appendChild($modal);
+    
+      $modalContainer.addEventListener('click', (e) => {
+        // Since this is also triggered when clicking INSIDE the modal
+        // We only want to close if the user clicks directly on the overlay
+        var $target = e.target;
+        if ($target === $modalContainer) {
+          hide();
+        }
+      });
+      
+      $modalContainer.classList.add('is-visible');
+    }
+    
+    function hide() {
+      $modalContainer.classList.remove('is-visible');
+    }
+
+    function isVisible() {
+      return $modalContainer.classList.contains('is-visible');
+    }
+
+    // exposed public functions
+    return {
+      show: show,
+      hide: hide,
+      isVisible: isVisible
+    };
+  })(); // end of modalDetails
+  
+
   function showLoadingMessage($listSpinnerSpan) {
     $listSpinnerSpan.classList.add('list-spinner');
   }
@@ -126,7 +189,8 @@
     // load details
     pokemonRepository.loadDetails(pokemon)
       .then(function () {
-        console.log(pokemon);
+        // show the modal of the details of the pokemon
+        modalDetails.show(pokemon);
       })
       .finally(function () {
         // hide loading spinner in the button
@@ -202,5 +266,12 @@
         hideLoadingMessage($listSpinnerDiv);
       });
   }
+  
+  window.addEventListener('keydown', (e) => {
+    // if the user presses the ESC key the modal should be hidden if it is already not
+    if (e.key === 'Escape' && modalDetails.isVisible()) {
+      modalDetails.hide();  
+    }
+  });
   
 })();
