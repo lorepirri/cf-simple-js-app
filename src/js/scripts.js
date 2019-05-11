@@ -104,7 +104,11 @@
 
     var $modalContainer = document.querySelector('#modal-container');
 
-    function show({name, height, imageUrl}) {
+    function show(book) {
+      var name = book.name;
+      var height = book.height;
+      var imageUrl = book.imageUrl;
+
       // Clear all existing modal content
       $modalContainer.innerHTML = '';
     
@@ -125,7 +129,7 @@
       $imageElement.setAttribute('src', imageUrl);
 
       var $contentElement = document.createElement('p');
-      $contentElement.innerText = `Height ${height}`;
+      $contentElement.innerText = 'Height ' + height;
     
       $modal.appendChild($closeButtonElement);
       $modal.appendChild($titleElement);
@@ -133,7 +137,7 @@
       $modal.appendChild($contentElement);
       $modalContainer.appendChild($modal);
     
-      $modalContainer.addEventListener('click', (e) => {
+      $modalContainer.addEventListener('click', function(e) {
         // Since this is also triggered when clicking INSIDE the modal
         // We only want to close if the user clicks directly on the overlay
         var $target = e.target;
@@ -170,7 +174,8 @@
     $listSpinnerSpan.classList.remove('list-spinner');
   }
 
-  function showButtonSpinner({name}) {
+  function showButtonSpinner(book) {
+    var name = book.name;    
     var target_id = '#' + BUTTON_SPINNER_ID_PREFIX + name;
     var $spinnerSpan = document.querySelector(target_id);
     if ($spinnerSpan) {
@@ -202,7 +207,7 @@
 
     // create and append a pokemon button to the specified <ul> element
 
-    var { name } = pokemon;
+    var name = pokemon.name;
 
     // create main <li> element containing the button
     var $listItemElement = document.createElement('li');
@@ -267,7 +272,7 @@
       });
   }
   
-  window.addEventListener('keydown', (e) => {
+  window.addEventListener('keydown', function(e) {
     // if the user presses the ESC key the modal should be hidden if it is already not
     if (e.key === 'Escape' && modalDetails.isVisible()) {
       modalDetails.hide();  
