@@ -17,7 +17,6 @@
       // validate the input as an object with the same properties
       // as the ones in the repository
 
-      var result = false;
       var properties = Object.keys(pokemon);      
       var result = (typeof pokemon === 'object')
                 && (requiredProperties.length === properties.length)
@@ -31,7 +30,7 @@
       if (validate(pokemon)) {
         repository.push(pokemon);
       } else {
-        console.error("Error: you are trying to add a non valid object to the repository");
+        console.error('Error: you are trying to add a non valid object to the repository');
       }
     }
   
@@ -234,7 +233,7 @@
     $pokemonsListContainer.appendChild($listItemElement);
 
     // add an event listener for the button, which was just appended to the DOM
-    $pokemonInfoDetailsButton.addEventListener('click', function(event) {
+    $pokemonInfoDetailsButton.addEventListener('click', function() {
       showDetails(pokemon);
     });
   }
