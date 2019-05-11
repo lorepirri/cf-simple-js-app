@@ -40,6 +40,11 @@ body {
   text-align: center;
 }
 
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
 /* ===HEADER=== */
 
 .page-header {

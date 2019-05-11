@@ -1,7 +1,7 @@
 (function () {
   
   // this is added as prefix to the id of the spinner span
-  var BUTTON_SPINNER_ID_PREFIX = 'spinner-'
+  var BUTTON_SPINNER_ID_PREFIX = 'spinner-';
 
   var pokemonRepository = (function () {
 
@@ -68,7 +68,7 @@
         })
         .catch(function (e) {
           console.error(e);
-        })
+        });
     }
 
     function loadDetails(pokemon) {
@@ -176,7 +176,7 @@
     if ($spinnerSpan) {
       $spinnerSpan.classList.add('button-spinner');
     }
-    return $spinnerSpan
+    return $spinnerSpan;
   }
   
   function hideButtonSpinner($spinnerSpan) {
@@ -185,7 +185,7 @@
 
   function showDetails(pokemon) {
     // show loading spinner in the button
-    var $spinnerSpan = showButtonSpinner(pokemon)
+    var $spinnerSpan = showButtonSpinner(pokemon);
     // load details
     pokemonRepository.loadDetails(pokemon)
       .then(function () {
@@ -248,7 +248,7 @@
     $pokemonsListContainer.parentNode.insertBefore($listSpinnerDiv, $pokemonsListContainer);
 
     // show list loading spinner
-    showLoadingMessage($listSpinnerDiv)
+    showLoadingMessage($listSpinnerDiv);
 
     // load the repository from the server to the repository
     pokemonRepository.loadList()
