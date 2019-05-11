@@ -104,10 +104,10 @@
 
     var $modalContainer = document.querySelector('#modal-container');
 
-    function show(book) {
-      var name = book.name;
-      var height = book.height;
-      var imageUrl = book.imageUrl;
+    function show(pokemon) {
+      var name = pokemon.name;
+      var height = pokemon.height;
+      var imageUrl = pokemon.imageUrl;
 
       // Clear all existing modal content
       $modalContainer.innerHTML = '';
@@ -174,8 +174,8 @@
     $listSpinnerSpan.classList.remove('list-spinner');
   }
 
-  function showButtonSpinner(book) {
-    var name = book.name;    
+  function showButtonSpinner(pokemon) {
+    var name = pokemon.name;    
     var target_id = '#' + BUTTON_SPINNER_ID_PREFIX + name;
     var $spinnerSpan = document.querySelector(target_id);
     if ($spinnerSpan) {
